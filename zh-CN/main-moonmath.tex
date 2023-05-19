@@ -1,0 +1,30 @@
+\documentclass[a4paper,oneside,12pt]{book}
+
+\usepackage{pdfpages}
+
+
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setCJKmainfont{LXGW WenKai Mono}
+\linespread{1.5}
+
+
+%Load the following packages last
+\usepackage{hyperref} % for all kinds of links
+\usepackage{cleveref}%must be loaded after `hyperref`
+
+\begin{document}
+
+
+\frontmatter
+
+
+%title page using the packege `pdfpages`
+\includepdf{figures/MMM_cover.jpg}
+
+% its common to put the preface before the table of content
+\include{chapters/preface-moonmath}
+
+
+
+\end{document}

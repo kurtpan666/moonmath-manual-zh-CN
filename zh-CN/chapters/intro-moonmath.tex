@@ -1,0 +1,211 @@
+\chapter{Introduction}
+% Note: I want to avoid using links or \term{}'s or anything like this here. This is just an introduction. All the terms are defined later. Lets be as little formal as possible here
+In the field of cryptography, \textit{zero-knowledge proofs} or \textit{zero-knowledge protocols} are a class of protocols that enable a party, known as the prover, to demonstrate the truth of a statement to other parties, referred to as verifiers, without revealing any information beyond the statement's veracity. This book is intended to provide a comprehensive introduction to the mathematical foundations and implementations of these proof systems, aimed at individuals with limited prior exposure to this area of research.
+
+Of particular significance in this context are \textit{zero-knowledge succinct, non-interactive arguments of knowledge} (zk-SNARKs), which possess the advantage of being much smaller in size than the original data required to establish the truth of a statement, and verifiers can be conveyed through a single message from the prover.
+
+From a practical standpoint, zk-SNARKs are intriguing because they allow for the honest computation of data to be proven publicly without disclosing the inputs to the computation, through the transmission of a concise transaction to a verifier embodied as a smart contract on a public blockchain. This facilitates the public verification of computation, improves the scalability of blockchain technology, and enhances the privacy of transactions.
+
+Based on this interconnection between blockchains and zk-SNARKs, growing interest in blockchain technology has elevated the need for a more nuanced and complete understanding of zero-knowledge protocols, their real-world applications and implementations, and the development of standards in this field. This is crucial for ensuring that developers can produce secure and high-quality code
+
+However, the intricacies of zero-knowledge proofs are complicated and require an in-depth comprehension of several mathematical and computer-theoretical disciplines, as well as familiarity with alternative computational models and programming paradigms. Unfortunately resources are often scattered across blog posts, github libraries and mathematical papers and as a result zk-SNARKs remain somewhat elusive or ''magical'' and are therefore sometimes coined as ''moon math''. This poses a barrier to entry and deters developers from exploring or incorporating them in their projects, hindering the widespread adoption of this technology and societies evolution towards web3.
+
+The 'MoonMath Manual to zk-SNARKs' aims to change this, designed specifically for individuals with limited prior exposure to cryptography. The manual aims to bridge knowledge gaps by providing a hands-on, practical approach to explaining abstract concepts using simple pen-and-paper calculations. As readers work through the manual, they will gain an understanding of the mathematics underlying zk-SNARKs, which will provide them with the necessary foundation for further exploration.
+
+\section{Target audience}
+The primary focus of this book are software and smart contract developers who aim to acquire a thorough understanding of the workings of zk-SNARKs, in order to be able to develop high quality, high security code, or who want to close some knowledge gaps. The book is suitable for both novice and experienced readers, as concepts are gradually introduced in a structured and logical manner, ensuring that the information is easily comprehensible.
+
+While the book is accessible to a wide range of readers, it is expected that the reader has a basic knowledge of programming and an interest in logical thinking and strategic problem solving. An enthusiasm for the subject matter is also necessary, as the details of zero-knowledge proofs can be complex. 
+
+
+\section{About the book}
+How much mathematics do you need to understand and implement zero-knowledge proofs? Of course, the answer is contingent upon the desired level of comprehension and the security demands of the application. It is possible to implement zero-knowledge proofs without any understanding of the underlying mathematics; however, to read a seminal paper, to grasp the intricacies of a proof system, or to develop secure and high-quality zk-SNARKs, some mathematical knowledge is indispensable.
+
+Without a solid grounding in mathematics, someone who is interested in learning the concepts of zero-knowledge proofs, but who has never seen or dealt with, say, a prime field, or an elliptic curve, may quickly become overwhelmed. This is not so much due to the complexity of the mathematics needed, but rather because of the vast amount of technical jargon, unknown terms, and obscure symbols that quickly makes a text unreadable, even though the concepts themselves are not actually that complicated. As a result, the reader might either lose interest, or pick up some incoherent bits and pieces of knowledge that, in the worst case scenario, result in immature and non-secure implementations. 
+
+Absence of a robust mathematical background can pose significant challenges to individuals interested in learning the principles of zero-knowledge proofs, particularly if they have not encountered mathematical concepts such as prime fields or elliptic curves. This is not due to the inherent complexity of the mathematics involved, but rather the presence of a large amount of technical jargon, unfamiliar terms, and abstract symbols, which can make the text impenetrable even when the concepts themselves are not particularly challenging. As a result, the reader may become disinterested or assimilate a fragmented and inconsistent understanding, leading to insecure and immature implementations.
+
+Significant portions of this book are dedicated to providing a comprehensive explanation of the mathematical foundations necessary for comprehending the fundamental concepts underlying zk-SNARK development. For readers who lack familiarity with basic number theory and elliptic curves, we strongly encourage dedicated study of the relevant chapters until they are able to solve a minimum of several exercises in each chapter. A deliberate focus on working through examples in detail is encouraged.
+
+The book starts at a very basic level, and only assume preexisting knowledge of fundamental concepts like high school integer arithmetic. It then progresses to demonstrate that there are numbers and mathematical structures that, although initially appearing very different from what was learned in high school, are actually analogous at a deeper level. This is exemplified through a variety of examples throughout the book.
+
+It is important to emphasize that the mathematics presented in this book is informal, incomplete, and optimized to facilitate efficient comprehension of zero-knowledge concepts. The design choice is to include only the minimum required theory, prioritizing a profusion of numerical examples. We believe that this informal, example-driven approach facilitates easier digestion of the material for beginners.
+
+As a novice, it is suggested that one first computes a simple toy zk-SNARK using pen and paper, before venturing into the development of high-security real-world zk-SNARKs. However, to derive these toy examples, some mathematical preparation is necessary. This book therefore aims to guide the inexperienced reader towards the essential mathematical concepts, providing exercises that are intended to be worked through independently. Each section includes a list of progressively challenging exercises to aid in memorization and application of the concepts.
+
+
+\section{Reading this Book}
+The MoonMath Manual is intended to provide a comprehensive introduction to topics relevant to beginners in mathematics and cryptography. As such, there are multiple ways to read the book. The most straightforward approach is to follow the chapters in a linear order. This method is recommended for readers who have limited prior knowledge of mathematics and cryptography. The book begins with fundamental concepts such as natural numbers, prime numbers, and operations on these sets in various arithmetics. Subsequently, the book progresses to cover algebraic structures, including groups, rings, prime fields, and elliptic curves.
+
+Throughout the book, examples are introduced and gradually expanded upon with the incorporation of new knowledge from subsequent chapters. This incremental approach allows for the development of simple, yet full-fledged cryptographic systems that can be computed by hand, in order to provide a detailed illustration of each step.
+
+For readers interested in understanding elliptic curves as they pertain to zero-knowledge proving systems, a starting point could be the introduction to the $BLS6_6$ curve in \secname{} \ref{BLS6}. The $BLS6_6$ curve was specifically designed for the purpose of hand calculations, as the size of cryptographic elliptic curves often prohibits this type of computation. It is a pairing-friendly curve with all necessary properties to perform pairing-based computations without the aid of a computer, which can help to clarify the intricacies of the system. Additionally, the book includes a derivation of the \curvename{Tiny-jubjub} curve \ref{TJJ13-twisted-edwards}, which can be used for EdDSA calculations in circuits over $BLS6_6$.
+
+Readers interested in building a simple, pen-and-paper zk-SNARK from scratch may want to start with the examples related to the 3-factorization problem. In \examplename{} \ref{ex:3-factorization}, we introduce the 3-factorization problem as a statement in a formal language. If this is too abstract, the reader might start in \examplename{} \ref{ex:3-fac-zk-circuit}, where we describe the 3-factorization problem as an algebraic circuit. In \examplename{} \ref{ex:3-fac-zk-circuit_2} we execute the circuit. In \examplename{} \ref{ex:L-3fac-zk}, we introduce the concept of instance and witness into the problem in order to achieve various levels of zero knowledge later on. In \examplename{} \ref{ex:3-factorization-r1cs} we transform the circuit into an associated Rank-1 Constraint System and in \examplename{} \ref{ex:3-fac-R1CS-constr-proof} we compute a constructive proof for the problem. In \examplename{} \ref{ex:3-fac-QAP} we transform that constraint system into a Quadratic Arithmetic Program in and show how constructive proofs are transformed into polynomial divisibility problems. In \examplename{} \ref{ex:3-fac-groth-16-params}, we  use the result of those examples to derive a Groth16 zk-SNARK for the 3-factorization problem. In \ref{def:groth16-crs}, we compute the prover and the verifier key. In \examplename{} \ref{3-fac-snark-compute}, we compute a zk-SNARK and in \examplename{} \ref{3-fac-snark-verifier}, we verify that zk-SNARK. In \examplename{}, \ref{3-fac-snark-simulator} we show how to simulate proofs. 
+
+Readers desiring to implement a zk-SNARK in a practical programming language should begin with our Circom implementation of the 3-factorization problem, as described in \ref{ex:3-fac-circom}. The derivation of the corresponding Groth\_16 parameter set is outlined in \ref{ex:3-fac-groth-16-params-circom}, and the calculation of the associated Common Reference String is addressed in \ref{ex:3-fac-groth-16-setup-circom}. In \ref{ex:3-fac-groth-16-prover-circom}, we demonstrate the generation of a proof for randomly selected input values, which is then verified in \ref{ex:3-fac-groth-16-verifier-circom}. This illustration may serve as a starting point for a more in-depth understanding of the underlying mechanisms.
+
+Individuals seeking to enhance their comprehension of the process by which high-level programs are compiled into representations that are amenable to analysis by zero-knowledge proof systems may benefit from a review of Chapter \ref{chap:circuit-compilers}, in which we develop a toy language equipped with a "brain-compiler" that converts high-level code into graphical circuit representations. The crucial representations, such as the R1CS, are detailed in Section \ref{sec:R1CS}, and the fundamental principles of constructive proofs, witnesses, and instances are elucidated in \ref{sec:formal-languages}.
+
+
+
+\section{Contributions}Due to the significance and rapid advancement of the field of zero knowledge proofing systems, providing comprehensive coverage of relevant topics within the moonmath manual represents a substantial challenge. Hence, the community's contributions are greatly appreciated.
+
+If you would like to contribute to the development of the moonmath manual, we encourage you to submit your adapted material or original content to Least Authority. For those interested in making substantial contributions to the moonmath manual, we suggest reaching out directly to Least Authority at mmm@leastauthority.com. For further information, please refer to our license.
+
+%rest is commented out
+
+\begin{comment}
+\section{The Zoo of Zero-Knowledge Proofs}
+
+{First, a list of zero-knowledge proof systems:
+
+\begin{enumerate}
+	\item Pinocchio (2013): \href{https://eprint.iacr.org/2013/279.pdf}{{Paper}}
+	\begin{itemize}[label={--}]
+		\item Notes: trusted setup
+	\end{itemize}
+
+	\item BCGTV (2013): \href{https://eprint.iacr.org/2013/507.pdf}{{Paper}}
+	\begin{itemize}[label={--}]
+		\item Notes: trusted setup, implementation
+	\end{itemize}
+
+	\item BCTV (2013): \href{https://eprint.iacr.org/2013/879.pdf}{{Paper}}
+	\begin{itemize}[label={--}]
+		\item Notes: trusted setup, implementation
+	\end{itemize}
+
+	\item Groth16 (2016): 	\href{https://eprint.iacr.org/2016/260.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: trusted setup
+		\item Other resources: \href{https://www.gakonst.com/zksummit2019.pdf}{Talk in 2019 by Georgios Konstantopoulos}
+	\end{itemize}
+
+	\item GM17 (207): 	\href{https://eprint.iacr.org/2017/540.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: trusted setup
+		\item Other resources: later \href{https://eprint.iacr.org/2018/187}{Simulation extractability in ROM, 2018}
+	\end{itemize}
+
+	\item Bulletproofs (2017): \href{https://eprint.iacr.org/2017/1066.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: no trusted setup
+		\item Other resources: \href{https://eprint.iacr.org/2016/263.pdf}{Polynomial Commitment Scheme on DL, 2016} and \href{https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf}{KZG10, Polynomial Commitment Scheme on Pairings, 2010}
+	\end{itemize}
+
+	\item Ligero (2017): \href{https://acmccs.github.io/papers/p2087-amesA.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: no trusted setup
+		\item Other resources: 
+	\end{itemize}
+
+	\item Hyrax (2017): \href{https://eprint.iacr.org/2017/1132.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: no trusted setup
+		\item Other resources: 
+	\end{itemize}
+
+	\item STARKs (2018): \href{https://eprint.iacr.org/2018/046.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: no trusted setup 
+		\item Other resources: 
+	\end{itemize}
+
+	\item Aurora (2018): \href{https://eprint.iacr.org/2018/828.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: transparent SNARK
+		\item Other resources:
+	\end{itemize}
+
+	\item Sonic (2019): \href{https://eprint.iacr.org/2019/099.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: SNORK - SNARK with universal and updateable trusted setup, PCS-based
+		\item Other resources: \href{https://www.benthamsgaze.org/2019/02/07/introducing-sonic-a-practical-zk-snark-with-a-nearly-trustless-setup/}{Blog post by Mary Maller from 2019} and \href{https://eprint.iacr.org/2018/280}{work on updateable and universal setup from 2018}
+	\end{itemize}
+
+	\item Libra (2019): \href{https://eprint.iacr.org/2019/317}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: trusted setup
+		\item Other resources:
+	\end{itemize}
+
+	\item Spartan (2019): \href{https://eprint.iacr.org/2019/550.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: transparent SNARK
+		\item Other resources:
+	\end{itemize}
+
+	\item PLONK (2019): \href{https://eprint.iacr.org/2019/953.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: SNORK, PCS-based
+		\item Other resources: \href{https://www.plonk.cafe/t/welcome-to-discussion-of-plonk-related-research/24}{Discussion on Plonk systems} and \href{https://github.com/Fluidex/awesome-plonk}{Awesome Plonk list}
+	\end{itemize}
+
+	\item Halo (2019): \href{https://eprint.iacr.org/2019/1021}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: no trusted setup, PCS-based, recursive
+		\item Other resources: 
+	\end{itemize}
+
+	\item Marlin (2019): \href{https://eprint.iacr.org/2019/1047.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: SNORK, PCS-based
+		\item Other resources: \href{https://github.com/arkworks-rs/marlin}{Rust Github}
+	\end{itemize}
+
+	\item Fractal (2019): \href{https://eprint.iacr.org/2019/1076.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: Recursive, transparent SNARK
+		\item Other resources: 
+	\end{itemize}
+
+	\item SuperSonic (2019): \href{https://eprint.iacr.org/2019/1229.pdf}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: transparent SNARK, PCS-based
+		\item Other resources: \href{https://eprint.iacr.org/2021/358}{Attack on DARK compiler in 2021}
+	\end{itemize}
+
+	\item Redshift (2019): \href{https://eprint.iacr.org/2019/1400}{Paper}
+	\begin{itemize}[label={--}]
+		\item Notes: SNORK, PCS-based
+		\item Other resources: 
+	\end{itemize}
+
+
+
+\end{enumerate}
+
+\textbf{Other resources on the zoo: } \href{https://github.com/matter-labs/awesome-zero-knowledge-proofs}{Awesome ZKP list on Github}, \href{https://zkp.science/}{ZKP community} with the \href{https://docs.zkproof.org/reference.pdf}{reference document}
+
+}
+
+\paragraph{To Do List}
+\begin{itemize}
+	\item Make table for prover time, verifier time, and proof size
+	\item Think of categories - \textit{Achieved Goals}: Trusted setup or not, Post-quantum or not, \dots
+	\item Think of categories - \textit{Mathematical background}: Polynomial commitment scheme, \dots
+	\item \dots while we discuss the points above, we should also discuss a common notation/language for all these things. (E.g. transparent SNARK/no trusted setup/STARK)
+\end{itemize}
+
+\paragraph{Points to cover while writing}
+\begin{itemize}
+	\item Make a historical overview over the "discovery" of the different ZKP systems
+	\item Make reader understand what paper is build on what result etc. - the tree of publications!
+	\item Make reader understand the different terminology, e.g. SNARK/SNORK/STARK, PCS, R1CS, updateable, universal, $\dots$
+	\item Make reader understand the mathematical assumptions - and what this means for the zoo.
+	\item Where will the development/evolution go? What are bottlenecks?
+\end{itemize}
+
+\vspace*{1em}
+{\footnotesize
+\hspace*{-1em}\textbf{Other topics I fell into while compiling this list}
+\begin{itemize}
+	\item Vector commitments: \url{https://eprint.iacr.org/2020/527.pdf}
+	\item Snarkl: \url{http://ace.cs.ohio.edu/~gstewart/papers/snaarkl.pdf}
+	\item Virgo?: \url{https://people.eecs.berkeley.edu/~kubitron/courses/cs262a-F19/projects/reports/project5_report_ver2.pdf}
+\end{itemize} 
+}
+
+\end{comment}
+
